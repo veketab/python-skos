@@ -9,8 +9,8 @@ class TestCase(unittest.TestCase):
 
     def getConcepts(self):
         concepts = [
-            skos.Concept("uri1", "prefLabel1", "definition1", "notation1", "altLabel1"),
-            skos.Concept("uri2", "prefLabel2", "definition2", "notation2", "altLabel2"),
+            skos.Concept("uri1", "prefLabel1", "definition1", "notation1", "altLabel1", "note1"),
+            skos.Concept("uri2", "prefLabel2", "definition2", "notation2", "altLabel2", "note2"),
         ]
         return concepts
 
@@ -32,7 +32,7 @@ class TestCase(unittest.TestCase):
         collection = self.getCollection()
         objects.append(collection)
         graph = self.builder.build(objects)
-        self.assertEqual(len(graph), 16)
+        self.assertEqual(len(graph), 18)
 
         # round trip the data
         loader = skos.RDFLoader(graph)
@@ -40,7 +40,8 @@ class TestCase(unittest.TestCase):
 
         for obj in objects:
             self.assertIn(obj.uri, loader)
-            self.assertEqual(loader[obj.uri], obj)
+            loader_obj = loader[obj.uri]
+            self.assertEqual(loader_obj, obj)
 
 
 if __name__ == "__main__":
