@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-skos"
+version = "0.2.0"
+license = {text = "BSD-2-Clause"}
+authors = [
+  { name="Robert Bates", email="rbates@veketab.com" },
+  { name="Homme Zwaagstra <original author>", email="hrz@geodata.soton.ac.uk" },
+]
+description = "A basic implementation of some core elements of the SKOS object model"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "rdflib~=7.1.4",
+    "SQLAlchemy~=2.0.41",
+    "iso8601~=2.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "flake8",
+    "build",
+    "black",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/veketab/python_skos"
+"Source" = "https://github.com/veketab/python_skos"
+"Bug Tracker" = "https://github.com/veketab/python_skos/issues"
+
+[project.scripts]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
