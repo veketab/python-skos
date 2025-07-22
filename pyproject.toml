@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python-skos"
-version = "0.2.0"
+version = "0.2.1"
 license = {text = "BSD-2-Clause"}
 authors = [
   { name="Robert Bates", email="rbates@veketab.com" },
