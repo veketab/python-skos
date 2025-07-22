@@ -300,6 +300,7 @@ class Concept(Object):
     definition = Column(Text)
     notation = Column(String(50))
     altLabel = Column(String(50))
+    note = Column(Text)
 
     def __init__(
             self,
@@ -307,13 +308,15 @@ class Concept(Object):
             prefLabel,
             definition=None,
             notation=None,
-            altLabel=None
+            altLabel=None,
+            note=None
     ):
         super(Concept, self).__init__(uri)
         self.prefLabel = prefLabel
         self.definition = definition
         self.notation = notation
         self.altLabel = altLabel
+        self.note = note
 
     # many to many Concept <-> Concept representing broadness <->
     # narrowness
@@ -385,6 +388,7 @@ class Concept(Object):
             "definition",
             "notation",
             "altLabel",
+            "note",
         ]
         return hash(
             "".join(
@@ -406,6 +410,7 @@ class Concept(Object):
             "definition",
             "notation",
             "altLabel",
+            "note",
         ]
         try:
             return min(
@@ -728,14 +733,17 @@ class RDFLoader(collections.abc.Mapping):
         # generate all the concepts
         concepts = set()
         normalise_uri = self.normalise_uri
-        definition = rdflib.URIRef(
+        pred_definition = rdflib.URIRef(
             "http://www.w3.org/2004/02/skos/core#definition"
         )
-        notation = rdflib.URIRef(
+        pred_notation = rdflib.URIRef(
             "http://www.w3.org/2004/02/skos/core#notation"
         )
-        altLabel = rdflib.URIRef(
+        pred_altLabel = rdflib.URIRef(
             "http://www.w3.org/2004/02/skos/core#altLabel"
+        )
+        pred_note = rdflib.URIRef(
+            "http://www.w3.org/2004/02/skos/core#note"
         )
 
         default_label = [[None, type("obj", (object,), {"value": ""})]]
@@ -753,13 +761,13 @@ class RDFLoader(collections.abc.Mapping):
 
             label = str(label_list[0][1].value)
 
-            defn = self._get_value_for_lang(graph, subject, definition, lang)
-            alt = self._get_value_for_lang(graph, subject, altLabel, lang)
-
-            notn = str(graph.value(subject=subject, predicate=notation))
+            definition = self._get_value_for_lang(graph, subject, pred_definition, lang)
+            altLabel = self._get_value_for_lang(graph, subject, pred_altLabel, lang)
+            notation = str(graph.value(subject=subject, predicate=pred_notation))
+            note = str(graph.value(subject=subject, predicate=pred_note))
 
             debug("creating Concept %s", uri)
-            cache[uri] = Concept(uri, label, defn, notn, alt)
+            cache[uri] = Concept(uri, label, definition, notation, altLabel, note)
             concepts.add(uri)
 
         attrs = {
@@ -1012,6 +1020,11 @@ class RDFBuilder(object):
             node,
             self.SKOS["altLabel"],
             rdflib.Literal(concept.altLabel)
+        ))
+        graph.add((
+            node,
+            self.SKOS["note"],
+            rdflib.Literal(concept.note)
         ))
 
         for uri, syn in concept.synonyms.items():
