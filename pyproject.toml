@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 name = "python-skos"
 version = "0.2.0"
 license = "BSD-2-Clause"
-license-files = ["LICENSE.md"]
 authors = [
   { name="Robert Bates", email="rbates@veketab.com" },
   { name="Homme Zwaagstra <original author>", email="hrz@geodata.soton.ac.uk" },
