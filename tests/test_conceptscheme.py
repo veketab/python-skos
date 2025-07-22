@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
+from python_skos import skos
+from .test_concept import TestCase
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-import skos
-from test_concept import TestCase
 
 class TestConceptScheme(TestCase):
     """
@@ -11,7 +9,7 @@ class TestConceptScheme(TestCase):
     """
 
     def getTestObj(self):
-        return skos.ConceptScheme('uri', 'title', 'description')
+        return skos.ConceptScheme("uri", "title", "description")
 
     def testInheritance(self):
         super(TestConceptScheme, self).doTestInheritance()
@@ -23,15 +21,15 @@ class TestConceptScheme(TestCase):
         scheme.concepts = self.getChildConcepts()
         self.obj.concepts = self.getChildConcepts()
         self.assertEqual(self.obj, scheme)
-    
+
     def testInsert(self):
         session1 = self.Session()
         session2 = self.Session()
 
         self.obj.concepts = self.getChildConcepts()
-        
+
         # add the object to session1
-        session1.begin(subtransactions=True)
+        session1.begin()
         session1.add(self.obj)
         session1.commit()
 
@@ -44,6 +42,8 @@ class TestConceptScheme(TestCase):
         self.assertEqual(self.obj, scheme)
         self.assertEqual(len(scheme.concepts), 2)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from test import unittest
+
     unittest.main(verbosity=2)
