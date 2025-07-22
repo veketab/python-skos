@@ -1,7 +1,5 @@
 # Python SKOS
 
-[![Build Status](https://secure.travis-ci.org/geo-data/python-skos.png)](http://travis-ci.org/geo-data/python-skos)
-
 ## Overview
 
 This package provides a basic implementation of *some* of the core
